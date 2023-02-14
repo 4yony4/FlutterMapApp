@@ -14,6 +14,9 @@ class MapSample extends StatefulWidget {
 class MapSampleState extends State<MapSample> {
 
   late GoogleMapController controller;
+  BitmapDescriptor? _markerIcon;
+
+  LatLng _kMapCenter = LatLng(40.423385, -3.528790);
 
   static const CameraPosition _kGooglePlex = CameraPosition(
     bearing: 192.8334901395799,
@@ -28,6 +31,12 @@ class MapSampleState extends State<MapSample> {
     tilt: 79.440717697143555,
     zoom: 34.4746,
   );
+
+  static const CameraPosition _kSol = CameraPosition(
+      bearing: 192.8334901395799,
+      target: LatLng(40.416924, -3.703517),
+      tilt: 59.440717697143555,
+      zoom: 19.151926040649414);
 
   static const CameraPosition _kLake = CameraPosition(
       bearing: 192.8334901395799,
@@ -44,16 +53,33 @@ class MapSampleState extends State<MapSample> {
         onMapCreated: (GoogleMapController controller) {
           this.controller=controller;
         },
+        markers: <Marker>{_createMarker()},
       ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: _goToTheLake,
+        onPressed: _goToTheSol,
         label: const Text('To the lake!'),
         icon: const Icon(Icons.directions_boat),
       ),
     );
   }
 
-  Future<void> _goToTheLake() async {
-    controller.animateCamera(CameraUpdate.newCameraPosition(_kLake));
+  Future<void> _goToTheSol() async {
+    controller.animateCamera(CameraUpdate.newCameraPosition(_kSol));
   }
+
+  Marker _createMarker() {
+    if (_markerIcon != null) {
+      return Marker(
+        markerId: const MarkerId('marker_1'),
+        position: _kMapCenter,
+        icon: _markerIcon!,
+      );
+    } else {
+      return Marker(
+        markerId: MarkerId('marker_1'),
+        position: _kMapCenter,
+      );
+    }
+  }
+
 }
