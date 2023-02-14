@@ -12,12 +12,21 @@ class MapSample extends StatefulWidget {
 }
 
 class MapSampleState extends State<MapSample> {
-  final Completer<GoogleMapController> _controller =
-  Completer<GoogleMapController>();
+
+  late GoogleMapController controller;
 
   static const CameraPosition _kGooglePlex = CameraPosition(
-    target: LatLng(37.42796133580664, -122.085749655962),
-    zoom: 14.4746,
+    bearing: 192.8334901395799,
+    target: LatLng(40.423385, -3.528790),
+    tilt: 79.440717697143555,
+    zoom: 18.4746,
+  );
+
+  static const CameraPosition _kGooglePlex2 = CameraPosition(
+    bearing: 192.8334901395799,
+    target: LatLng(40.423385, -3.528790),
+    tilt: 79.440717697143555,
+    zoom: 34.4746,
   );
 
   static const CameraPosition _kLake = CameraPosition(
@@ -33,7 +42,7 @@ class MapSampleState extends State<MapSample> {
         mapType: MapType.hybrid,
         initialCameraPosition: _kGooglePlex,
         onMapCreated: (GoogleMapController controller) {
-          _controller.complete(controller);
+          this.controller=controller;
         },
       ),
       floatingActionButton: FloatingActionButton.extended(
@@ -45,7 +54,6 @@ class MapSampleState extends State<MapSample> {
   }
 
   Future<void> _goToTheLake() async {
-    final GoogleMapController controller = await _controller.future;
     controller.animateCamera(CameraUpdate.newCameraPosition(_kLake));
   }
 }
